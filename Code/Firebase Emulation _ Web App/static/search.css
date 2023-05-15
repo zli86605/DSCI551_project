@@ -1,0 +1,50 @@
+  body {
+  background-image: url('background_villige.png');
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  label {
+    font-size: 1.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  input[type="text"] {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0.2rem;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    max-width: 50%;
+    margin-inline: auto;
+  }
+  
+  input[type="submit"] {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0.2rem;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    max-width: 50%;
+    margin-inline: auto;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #0062cc;
+  }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Search Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+  </head>
+  <body>
+    <form method="GET" action="http://127.0.0.1:8000">
+      <label for="username">Account Name</label>
+      <input type="text" id="username" name="username" required><br><br>
+      <input type="submit" value="Search">
+    </form>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Detail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='comment1.css') }}">
+</head>
+<body>
+    <h1>Post Detail</h1>
+    <ul id="post-container"></ul>
+    <form id="submit-form" style="text-align: center;">
+        <label for="article" style="display: inline-block;">Comment</label>
+        <input type="text" id="comment" name="comment">
+        <input type="submit" value="Submit">
+    </form>    
+    <ul id="comments-container"></ul>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:8000');
+
+        socket.on('post', function(data) {
+            console.log(data);
+            var postContainer = $('#post-container');
+            postContainer.empty();
+            var div = $('<div>').addClass('post');
+            var article = $('<p>').text(data.article);
+            div.append(article);
+            postContainer.append(div);
+
+        })
+
+        socket.on('comments', function(data) {
+            console.log(data);
+            var commentsContainer = $('#comments-container');
+            commentsContainer.empty(); // Clear the container of posts
+            
+                       
+            for (var i = 0; i < data.length; i++) {
+                var comment = data[i];
+                var div = $('<div>').addClass('comment');
+
+                var comment_text = $('<p>').text(comment.comments);
+
+                var bdiv = $('<div>').addClass('bDiv');
+                var deleteButton = $('<button>').text('Delete').data('comment_id', comment._id);
+
+                deleteButton.click(function() {
+                    var comment_id = $(this).data('comment_id')
+                    socket.emit('delete_comment', comment_id)
+                });
+                bdiv.append(deleteButton);
+                // bdiv.append(comment_text,deleteButton);
+                div.append(comment_text,bdiv);
+
+                commentsContainer.append(div);
+            }
+        });
+
+        $(document).ready(function() {
+            // Get post_id from URL
+            var postid = window.location.pathname.split('/')[2];
+            $('#post-id').text(postid);
+
+            // Request the article of the post
+            socket.emit('get_single_post', postid)
+
+            // Request list of comments for post
+            socket.emit('get_post_comments', {post_id: postid});
+
+            // Submit new comment
+            $('#submit-form').submit(function(event) {
+                event.preventDefault();
+                var comment = $('#comment').val();
+                socket.emit('submit_comment', {post_id: postid, comments: comment});
+                $('#comment').val(''); // Clear the form
+            });           
+        });
+    </script>
+</body>
+</html>
